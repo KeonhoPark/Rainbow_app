@@ -3,8 +3,8 @@ import 'package:rainbow/rainbow/help.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'home.dart';
 import 'myPage.dart';
-import 'camera.dart';
 import 'whatIsPC.dart';
+import 'mainPage.dart';
 
 Color rainbowPrimaryColor = Color.fromARGB(255, 38, 103, 240);
 
@@ -35,7 +35,7 @@ class _Rainbow extends State<Rainbow> {
         index: currentIndex, // index 순서에 해당하는 child를 맨 위에 보여줌
         children: [
           Home(),
-          Camera(),
+          MainPage(),
           MyPage(),
         ],
       ),
