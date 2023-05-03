@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rainbow/rainbow/help.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'home.dart';
 import 'myPage.dart';
 import 'whatIsPC.dart';
 import 'mainPage.dart';
+import '../main.dart';
 
 Color rainbowPrimaryColor = Color.fromARGB(255, 38, 103, 240);
 
@@ -89,12 +91,12 @@ class _Rainbow extends State<Rainbow> {
                             ),
                           ),
                           Text(
-                            "닉네임",
+                            nickName,
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "내 퍼스널컬러 : 겨울쿨톤",
+                            "내 퍼스널컬러 : $cur_pc_type",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -145,7 +147,36 @@ class _Rainbow extends State<Rainbow> {
                     color: Colors.black,
                   ),
                   onPressed: () {
-                    print("exit");
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text(
+                              "정말로 종료하시겠습니까?",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  "취소",
+                                  style: TextStyle(color: rainbowPrimaryColor),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  SystemNavigator.pop();
+                                },
+                                child: Text(
+                                  "종료",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          );
+                        });
                   },
                 ))
           ]),
