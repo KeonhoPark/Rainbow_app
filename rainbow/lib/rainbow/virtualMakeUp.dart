@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'camera_preview_scanner.dart';
 
-class VirtualMakeUp extends StatefulWidget {
-  const VirtualMakeUp({super.key});
+class VirtualMakeUp extends StatelessWidget {
+  const VirtualMakeUp({Key? key}) : super(key: key);
 
-  @override
-  State<VirtualMakeUp> createState() => _VirtualMakeUp();
-}
-
-class _VirtualMakeUp extends State<VirtualMakeUp> {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Text('Virtual Make Up'),
+    return MaterialApp(
+      home: const CameraPreviewScanner(),
     );
   }
 }

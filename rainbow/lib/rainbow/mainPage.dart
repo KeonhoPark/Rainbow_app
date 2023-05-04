@@ -1,3 +1,4 @@
+// @dart=2.17
 import 'package:flutter/material.dart';
 import 'package:rainbow/rainbow/camera.dart';
 import 'package:rainbow/rainbow/rainbow.dart';

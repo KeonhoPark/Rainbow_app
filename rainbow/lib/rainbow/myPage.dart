@@ -56,15 +56,12 @@ class _MyPageState extends State<MyPage> {
                     ),
                     validator: (input) {
                       if (input == null || input.isEmpty) {
-                        // textController.text = nickName;
                         return '닉네임을 입력해주세요.';
                       }
                       if (2 > input.length) {
-                        // textController.text = nickName;
                         return '닉네임이 너무 짧습니다.';
                       }
                       if (input.length > 16) {
-                        // textController.text = nickName;
                         return '닉네임이 너무 깁니다.';
                       }
                       return null;
