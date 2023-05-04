@@ -11,6 +11,7 @@ import 'package:google_ml_vision/google_ml_vision.dart';
 
 import 'detector_painters.dart';
 import 'scanner_utils.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class CameraPreviewScanner extends StatefulWidget {
   const CameraPreviewScanner({Key key}) : super(key: key);
@@ -23,7 +24,7 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
   dynamic _scanResults;
   CameraController _camera;
   bool _isDetecting = false;
-  CameraLensDirection _direction = CameraLensDirection.front;
+  final CameraLensDirection _direction = CameraLensDirection.front;
 
   final FaceDetector _faceDetector = GoogleVision.instance
       .faceDetector(FaceDetectorOptions(enableContours: true));
@@ -71,20 +72,12 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
     });
   }
 
-  // Future<dynamic> Function(GoogleVisionImage image) _getDetectionMethod() {
-  //   switch (_currentDetector) {
-  //     case Detector.text:
-  //       return _recognizer.processImage;
-  //     case Detector.barcode:
-  //       return _barcodeDetector.detectInImage;
-  //     case Detector.label:
-  //       return _imageLabeler.processImage;
-  //     case Detector.face:
-  //       return _faceDetector.processImage;
-  //   }
-
-  //   return null;
-  // }
+  void _takeSnapShot() async {
+    XFile image = await _camera.takePicture();
+    if (image != null) {
+      GallerySaver.saveImage(image.path);
+    }
+  }
 
   Widget _buildResults() {
     const Text noResultsText = Text('No results!');
@@ -133,61 +126,12 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
     );
   }
 
-  //x
-  // Future<void> _toggleCameraDirection() async {
-  //   if (_direction == CameraLensDirection.back) {
-  //     _direction = CameraLensDirection.front;
-  //   } else {
-  //     _direction = CameraLensDirection.back;
-  //   }
-
-  //   await _camera.stopImageStream();
-  //   await _camera.dispose();
-
-  //   setState(() {
-  //     _camera = null;
-  //   });
-
-  //   await _initializeCamera();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   actions: <Widget>[
-      //     PopupMenuButton<Detector>(
-      //       onSelected: (Detector result) {
-      //         _currentDetector = result;
-      //       },
-      //       itemBuilder: (BuildContext context) => <PopupMenuEntry<Detector>>[
-      //         const PopupMenuItem<Detector>(
-      //           value: Detector.barcode,
-      //           child: Text('Detect Barcode'),
-      //         ),
-      //         const PopupMenuItem<Detector>(
-      //           value: Detector.face,
-      //           child: Text('Detect Face'),
-      //         ),
-      //         const PopupMenuItem<Detector>(
-      //           value: Detector.label,
-      //           child: Text('Detect Label'),
-      //         ),
-      //         const PopupMenuItem<Detector>(
-      //           value: Detector.text,
-      //           child: Text('Detect Text'),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // ),
       body: _buildImage(),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _toggleCameraDirection,
-      //   child: _direction == CameraLensDirection.back
-      //       ? const Icon(Icons.camera_front)
-      //       : const Icon(Icons.camera_rear),
-      // ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: _takeSnapShot, child: Icon(Icons.get_app)),
     );
   }
 

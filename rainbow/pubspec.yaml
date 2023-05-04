@@ -40,6 +40,7 @@ dependencies:
   google_ml_vision: ^0.0.8
   # image_picker: ^0.8.7+4
   camera: ^0.10.5
+  gallery_saver: ^2.3.2
 
 dev_dependencies:
   flutter_test:

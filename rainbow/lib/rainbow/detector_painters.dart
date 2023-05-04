@@ -10,14 +10,6 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:google_ml_vision/google_ml_vision.dart';
 
-enum Detector {
-  barcode,
-  face,
-  label,
-  cloudLabel,
-  text,
-}
-
 const List<Point<int>> faceMaskConnections = [
   Point(0, 4),
   Point(0, 55),
@@ -93,34 +85,75 @@ class FaceDetectorPainter extends CustomPainter {
       ..color = Colors.green;
 
     for (final Face face in faces) {
-      final contour = face.getContour((FaceContourType.allPoints));
+      final LLBContour = face.getContour(FaceContourType.lowerLipBottom);
+      final LLTContour = face.getContour(FaceContourType.lowerLipTop);
+      final ULBContour = face.getContour(FaceContourType.upperLipBottom);
+      final ULTContour = face.getContour(FaceContourType.upperLipTop);
+      final LEBContour = face.getContour(FaceContourType.leftEyebrowBottom);
+      final LETContour = face.getContour(FaceContourType.leftEyebrowTop);
+      final REBContour = face.getContour(FaceContourType.rightEyebrowBottom);
+      final RETContour = face.getContour(FaceContourType.rightEyebrowTop);
+
       canvas.drawPoints(
           ui.PointMode.points,
-          contour.positionsList
-              .map(
-                  (offset) => Offset((-offset.dx * scaleX), offset.dy * scaleY))
+          LLBContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          LLTContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          ULBContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          ULTContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          LEBContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          LETContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          REBContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+              .toList(),
+          paint);
+      canvas.drawPoints(
+          ui.PointMode.points,
+          RETContour.positionsList
+              .map((offset) =>
+                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
               .toList(),
           paint);
       /*for (int i = 0; i < contour.positionsList.length - 1; i++) {
         canvas.drawLine(contour.positionsList[i].scale(scaleX, scaleY),
             contour.positionsList[i + 1].scale(scaleX, scaleY), paint);
       }*/
-      for (final connection in faceMaskConnections) {
-        canvas.drawLine(
-            contour.positionsList[connection.x].scale(scaleX, scaleY),
-            contour.positionsList[connection.y].scale(scaleX, scaleY),
-            paint);
-      }
-
-      canvas.drawRect(
-        Rect.fromLTRB(
-          face.boundingBox.left * scaleX,
-          face.boundingBox.top * scaleY,
-          face.boundingBox.right * scaleX,
-          face.boundingBox.bottom * scaleY,
-        ),
-        greenPaint,
-      );
     }
   }
 
