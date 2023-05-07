@@ -66,7 +66,7 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
         },
       ).whenComplete(() => Future.delayed(
           Duration(
-            milliseconds: 100,
+            microseconds: 10,
           ),
           () => {_isDetecting = false}));
     });

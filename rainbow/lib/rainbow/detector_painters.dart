@@ -75,14 +75,12 @@ class FaceDetectorPainter extends CustomPainter {
     final double scaleY = size.height / absoluteImageSize.height;
 
     final Paint paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
-      ..color = Colors.red;
-
-    final Paint greenPaint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
-      ..color = Colors.green;
+      // ..style = PaintingStyle.fill
+      // ..colorFilter =
+      //     ColorFilter.mode(Colors.amber.withOpacity(0.5), BlendMode.plus)
+      ..color = ui.Color.fromARGB(255, 112, 26, 26).withOpacity(1.0)
+      ..blendMode = BlendMode.plus;
+    // ..strokeWidth = 2;
 
     for (final Face face in faces) {
       final LLBContour = face.getContour(FaceContourType.lowerLipBottom);
@@ -94,67 +92,92 @@ class FaceDetectorPainter extends CustomPainter {
       final REBContour = face.getContour(FaceContourType.rightEyebrowBottom);
       final RETContour = face.getContour(FaceContourType.rightEyebrowTop);
 
-      canvas.drawPoints(
-          ui.PointMode.points,
-          LLBContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          LLTContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          ULBContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          ULTContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          LEBContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          LETContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          REBContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      canvas.drawPoints(
-          ui.PointMode.points,
-          RETContour.positionsList
-              .map((offset) =>
-                  Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-              .toList(),
-          paint);
-      /*for (int i = 0; i < contour.positionsList.length - 1; i++) {
-        canvas.drawLine(contour.positionsList[i].scale(scaleX, scaleY),
-            contour.positionsList[i + 1].scale(scaleX, scaleY), paint);
-      }*/
+      drawUpperLip(canvas, ULBContour, size, scaleX, scaleY, ULTContour, paint);
+
+      drawLowerLip(canvas, LLBContour, size, scaleX, scaleY, LLTContour, paint);
+
+      drawLeftEyebrow(
+          canvas, LEBContour, size, scaleX, scaleY, LETContour, paint);
+
+      drawRightEyebrow(
+          canvas, REBContour, size, scaleX, scaleY, RETContour, paint);
     }
+  }
+
+  Path getPath(List<Offset> drawPoints) {
+    Path path = Path();
+    for (int i = 0; i < drawPoints.length; i++) {
+      path.lineTo(drawPoints[i].dx, drawPoints[i].dy);
+    }
+    return path;
+  }
+
+  void drawLeftEyebrow(ui.Canvas canvas, FaceContour LEBContour, ui.Size size,
+      double scaleX, double scaleY, FaceContour LETContour, ui.Paint paint) {
+    List<Offset> drawPoints = LEBContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList() +
+        LETContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList()
+            .reversed
+            .toList();
+    drawPoints.add(drawPoints.first);
+
+    return canvas.drawPath(getPath(drawPoints), paint);
+  }
+
+  void drawRightEyebrow(ui.Canvas canvas, FaceContour REBContour, ui.Size size,
+      double scaleX, double scaleY, FaceContour RETContour, ui.Paint paint) {
+    List<Offset> drawPoints = REBContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList() +
+        RETContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList()
+            .reversed
+            .toList();
+    drawPoints.add(drawPoints.first);
+
+    return canvas.drawPath(getPath(drawPoints), paint);
+  }
+
+  void drawUpperLip(ui.Canvas canvas, FaceContour ULBContour, ui.Size size,
+      double scaleX, double scaleY, FaceContour ULTContour, ui.Paint paint) {
+    List<Offset> drawPoints = ULBContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList() +
+        ULTContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList()
+            .reversed
+            .toList();
+    drawPoints.add(drawPoints.first);
+
+    return canvas.drawPath(getPath(drawPoints), paint);
+  }
+
+  void drawLowerLip(ui.Canvas canvas, FaceContour LLBContour, ui.Size size,
+      double scaleX, double scaleY, FaceContour LLTContour, ui.Paint paint) {
+    List<Offset> drawPoints = LLBContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList() +
+        LLTContour.positionsList
+            .map((offset) =>
+                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+            .toList()
+            .reversed
+            .toList();
+    drawPoints.add(drawPoints.first);
+
+    return canvas.drawPath(getPath(drawPoints), paint);
   }
 
   @override
