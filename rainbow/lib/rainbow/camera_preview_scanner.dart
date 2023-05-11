@@ -1,8 +1,6 @@
-// Copyright 2019 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 // @dart=2.9
+
+// import 'dart:html';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
@@ -12,6 +10,7 @@ import 'package:google_ml_vision/google_ml_vision.dart';
 import 'detector_painters.dart';
 import 'scanner_utils.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:native_screenshot/native_screenshot.dart';
 
 class CameraPreviewScanner extends StatefulWidget {
   const CameraPreviewScanner({Key key}) : super(key: key);
@@ -24,6 +23,7 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
   dynamic _scanResults;
   CameraController _camera;
   bool _isDetecting = false;
+  bool shouldShow = true;
   final CameraLensDirection _direction = CameraLensDirection.front;
 
   final FaceDetector _faceDetector = GoogleVision.instance
@@ -73,9 +73,9 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
   }
 
   void _takeSnapShot() async {
-    XFile image = await _camera.takePicture();
-    if (image != null) {
-      GallerySaver.saveImage(image.path);
+    String path = await NativeScreenshot.takeScreenshot();
+    if (path != null) {
+      GallerySaver.saveImage(path);
     }
   }
 
@@ -130,8 +130,15 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildImage(),
-      floatingActionButton: FloatingActionButton(
-          onPressed: _takeSnapShot, child: Icon(Icons.get_app)),
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          _takeSnapShot();
+        },
+        child: Icon(
+          Icons.get_app,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 

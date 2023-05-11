@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rainbow/rainbow/developmentInfo.dart';
 import '../main.dart';
 
 class MyPage extends StatefulWidget {
@@ -122,8 +123,24 @@ class _MyPageState extends State<MyPage> {
                   child: Divider(
                     color: Colors.black,
                   ),
-                )
+                ),
               ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DevelopmentInfo()),
+            ),
+            child: Container(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  "개발자 정보",
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.w800),
+                ),
+              ),
             ),
           )
         ],
