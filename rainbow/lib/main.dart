@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rainbow/rainbow/rainbow.dart';
 import 'package:camera/camera.dart';
 
@@ -15,6 +16,13 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // cameras = await availableCameras();
   // FlutterNativeSplash.
+
+  if (await Permission.manageExternalStorage.isDenied) {
+    debugPrint('no access storage');
+    await Permission.manageExternalStorage.request;
+    debugPrint('access storage granted');
+  }
+
   runApp(const MaterialApp(
     home: Rainbow(),
   ));

@@ -2,6 +2,8 @@
 
 // import 'dart:html';
 
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -73,10 +75,7 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
   }
 
   void _takeSnapShot() async {
-    String path = await NativeScreenshot.takeScreenshot();
-    if (path != null) {
-      GallerySaver.saveImage(path);
-    }
+    await NativeScreenshot.takeScreenshot();
   }
 
   Widget _buildResults() {
@@ -131,12 +130,16 @@ class _CameraPreviewScannerState extends State<CameraPreviewScanner> {
     return Scaffold(
       body: _buildImage(),
       floatingActionButton: GestureDetector(
-        onTap: () {
+        onTap: () async {
+          // shouldShow = false;
           _takeSnapShot();
+          // if (isDone) {
+          //   shouldShow = true;
+          // }
         },
         child: Icon(
           Icons.get_app,
-          color: Colors.white,
+          color: shouldShow ? Colors.white : Colors.transparent,
         ),
       ),
     );
