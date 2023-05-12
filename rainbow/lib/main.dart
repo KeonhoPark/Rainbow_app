@@ -11,9 +11,15 @@ const List<String> pc_type = <String>['봄 웜톤', '여름 쿨톤', '가을 웜
 String cur_pc_type = '여름 쿨톤';
 String nickName = 'qkrrjsgh';
 String image_url = "https://i.ibb.co/CwzHq4z/trans-logo-512.png";
+List<CameraDescription> cameras = [];
 
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  try {
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    print('cameraException $e');
+  }
   // cameras = await availableCameras();
   // FlutterNativeSplash.
 

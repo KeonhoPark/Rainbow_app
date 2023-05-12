@@ -1,6 +1,6 @@
 // @dart=2.17
 import 'package:flutter/material.dart';
-import 'package:rainbow/rainbow/camera.dart';
+import 'package:rainbow/rainbow/calculatePC.dart';
 import 'package:rainbow/rainbow/rainbow.dart';
 import 'package:rainbow/rainbow/virtualMakeUp.dart';
 
@@ -28,7 +28,8 @@ class MainPage extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () => Navigator.push(
                           context,
-                          MaterialPageRoute(builder: ((context) => Camera())),
+                          MaterialPageRoute(
+                              builder: ((context) => CalculatePC())),
                         ),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: rainbowPrimaryColor,
