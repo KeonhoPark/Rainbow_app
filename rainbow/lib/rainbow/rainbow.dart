@@ -69,10 +69,11 @@ class _Rainbow extends State<Rainbow> {
       ),
       drawer: Drawer(
         child: SafeArea(
-          child: Stack(children: [
-            Column(
-              children: [
-                DrawerHeader(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  DrawerHeader(
                     margin: EdgeInsets.all(0),
                     decoration: BoxDecoration(color: Colors.amber),
                     child: SizedBox(
@@ -102,84 +103,89 @@ class _Rainbow extends State<Rainbow> {
                           ),
                         ],
                       ),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: GestureDetector(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => WhatIsPC()))),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "퍼스널컬러란?",
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => WhatIsPC()))),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "퍼스널컬러란?",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: GestureDetector(
-                    onTap: () => Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => Help()))),
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "도움말",
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) => Help()))),
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "도움말",
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Positioned(
-                bottom: 0,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.exit_to_app,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(
-                              "정말로 종료하시겠습니까?",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Text(
-                                  "취소",
-                                  style: TextStyle(color: rainbowPrimaryColor),
-                                ),
+                ],
+              ),
+              Positioned(
+                  bottom: 0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.exit_to_app,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text(
+                                "정말로 종료하시겠습니까?",
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  SystemNavigator.pop();
-                                },
-                                child: Text(
-                                  "종료",
-                                  style: TextStyle(color: Colors.red),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "취소",
+                                    style:
+                                        TextStyle(color: rainbowPrimaryColor),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        });
-                  },
-                ))
-          ]),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    SystemNavigator.pop();
+                                  },
+                                  child: Text(
+                                    "종료",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              ],
+                            );
+                          });
+                    },
+                  ))
+            ],
+          ),
         ),
       ),
     ));

@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:rainbow/main.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rainbow/rainbow/rainbow.dart';
 import 'mainPage.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -97,43 +98,68 @@ class _CameraScreenState extends State<CameraScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      backgroundColor: rainbowPrimaryColor,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _isCameraInitialized
-              ? AspectRatio(
-                  aspectRatio: 1 / controller!.value.aspectRatio,
-                  child: controller!.buildPreview(),
-                )
-              : Container(),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: InkWell(
-                onTap: () async {
-                  XFile? rawImage = await takePicture();
-                  File imageFile = File(rawImage!.path);
-
-                  GallerySaver.saveImage(imageFile.path);
-
-                  // int currentUnix = DateTime.now().microsecondsSinceEpoch;
-                  // final directory = await getApplicationDocumentsDirectory();
-                  // String fileFormat = imageFile.path.split('.').last;
-                  // print(directory);
-
-                  // await imageFile.copy(
-                  //   '${directory.path}/$currentUnix.$fileFormat',
-                  // );
-                },
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Icon(Icons.circle, color: Colors.white38, size: 80),
-                    Icon(Icons.circle, color: Colors.white, size: 65),
-                  ],
+          Stack(
+            children: [
+              _isCameraInitialized
+                  ? AspectRatio(
+                      aspectRatio: 1 / controller!.value.aspectRatio,
+                      child: controller!.buildPreview(),
+                    )
+                  : Container(),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: InkWell(
+                    onTap: () async {
+                      XFile? rawImage = await takePicture();
+                      File imageFile = File(rawImage!.path);
+                      GallerySaver.saveImage(imageFile.path);
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(Icons.circle, color: Colors.white38, size: 80),
+                        Icon(Icons.circle, color: Colors.white, size: 65),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      print('다시 촬영 클릭 됨');
+                    },
+                    child: Text(
+                      "다시 촬영",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      print('측정하기 클릭 됨');
+                    },
+                    child: Text(
+                      "측정하기",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    )),
+              ),
+            ],
+          ),
         ],
       ),
     );
