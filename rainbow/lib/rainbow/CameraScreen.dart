@@ -19,6 +19,7 @@ class _CameraScreenState extends State<CameraScreen>
     with WidgetsBindingObserver {
   CameraController? controller;
   bool _isCameraInitialized = false;
+  File? imageFile = null;
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -107,7 +108,9 @@ class _CameraScreenState extends State<CameraScreen>
               _isCameraInitialized
                   ? AspectRatio(
                       aspectRatio: 1 / controller!.value.aspectRatio,
-                      child: controller!.buildPreview(),
+                      child: imageFile == null
+                          ? controller!.buildPreview()
+                          : Image.file(imageFile!),
                     )
                   : Container(),
               Positioned.fill(
@@ -116,8 +119,8 @@ class _CameraScreenState extends State<CameraScreen>
                   child: InkWell(
                     onTap: () async {
                       XFile? rawImage = await takePicture();
-                      File imageFile = File(rawImage!.path);
-                      GallerySaver.saveImage(imageFile.path);
+                      imageFile = File(rawImage!.path);
+                      GallerySaver.saveImage(imageFile!.path);
                     },
                     child: Stack(
                       alignment: Alignment.center,
@@ -139,6 +142,8 @@ class _CameraScreenState extends State<CameraScreen>
                 child: ElevatedButton(
                     onPressed: () {
                       print('다시 촬영 클릭 됨');
+                      imageFile = null;
+                      setState(() {});
                     },
                     child: Text(
                       "다시 촬영",

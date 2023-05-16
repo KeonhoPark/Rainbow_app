@@ -78,7 +78,7 @@ class FaceDetectorPainter extends CustomPainter {
       // ..style = PaintingStyle.fill
       // ..colorFilter =
       //     ColorFilter.mode(Colors.amber.withOpacity(0.5), BlendMode.plus)
-      ..color = ui.Color.fromARGB(255, 112, 26, 26).withOpacity(1.0)
+      ..color = ui.Color.fromARGB(255, 60, 21, 97).withOpacity(0.7)
       ..blendMode = BlendMode.plus;
     // ..strokeWidth = 2;
 
