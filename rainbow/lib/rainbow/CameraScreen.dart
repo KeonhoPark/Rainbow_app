@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:rainbow/rainbow/loading.dart';
 import 'package:rainbow/rainbow/rainbow.dart';
 import 'mainPage.dart';
+import 'package:google_ml_vision/google_ml_vision.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -21,6 +22,8 @@ class _CameraScreenState extends State<CameraScreen>
   CameraController? controller;
   bool _isCameraInitialized = false;
   File? imageFile = null;
+  List<Face> faces = [];
+  final FaceDetector _faceDetector = GoogleVision.instance.faceDetector();
 
   void onNewCameraSelected(CameraDescription cameraDescription) async {
     final previousCameraController = controller;
@@ -106,20 +109,11 @@ class _CameraScreenState extends State<CameraScreen>
             // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
-            //Dialog Main Title
-            // title: Column(
-            //   children: <Widget>[
-            //     new Text("Dialog Title"),
-            //   ],
-            // ),
-            //
             content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "사진을 촬영해주세요",
-                ),
+                Text(imageFile == null ? "사진을 촬영해 주세요" : "얼굴이 나오게 촬영해 주세요"),
               ],
             ),
             actions: <Widget>[
@@ -158,6 +152,14 @@ class _CameraScreenState extends State<CameraScreen>
                     onTap: () async {
                       XFile? rawImage = await takePicture();
                       imageFile = File(rawImage!.path);
+                      GoogleVisionImage visionImage =
+                          GoogleVisionImage.fromFile(imageFile!);
+                      faces = await _faceDetector.processImage(visionImage);
+                      if (faces.isEmpty) {
+                        // imageFile = null;
+                        print("No face!");
+                        setState(() {});
+                      }
                       GallerySaver.saveImage(imageFile!.path);
                     },
                     child: Stack(
@@ -194,14 +196,13 @@ class _CameraScreenState extends State<CameraScreen>
                 child: ElevatedButton(
                     onPressed: () {
                       print('측정하기 클릭 됨');
-                      if (imageFile != null) {
+                      if (imageFile != null && faces.isNotEmpty) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => Loading(),
                             ));
                       } else {
-                        print("사진을 촬영해주세요");
                         flutterDialog();
                         setState(() {});
                       }
