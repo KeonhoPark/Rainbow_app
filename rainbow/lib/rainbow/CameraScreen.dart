@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:rainbow/main.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rainbow/rainbow/loading.dart';
 import 'package:rainbow/rainbow/rainbow.dart';
 import 'mainPage.dart';
 
@@ -96,6 +97,43 @@ class _CameraScreenState extends State<CameraScreen>
     }
   }
 
+  void flutterDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            // RoundedRectangleBorder - Dialog 화면 모서리 둥글게 조절
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            //Dialog Main Title
+            // title: Column(
+            //   children: <Widget>[
+            //     new Text("Dialog Title"),
+            //   ],
+            // ),
+            //
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "사진을 촬영해주세요",
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: new Text("확인"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,6 +194,17 @@ class _CameraScreenState extends State<CameraScreen>
                 child: ElevatedButton(
                     onPressed: () {
                       print('측정하기 클릭 됨');
+                      if (imageFile != null) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Loading(),
+                            ));
+                      } else {
+                        print("사진을 촬영해주세요");
+                        flutterDialog();
+                        setState(() {});
+                      }
                     },
                     child: Text(
                       "측정하기",

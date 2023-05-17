@@ -78,7 +78,7 @@ class FaceDetectorPainter extends CustomPainter {
       // ..style = PaintingStyle.fill
       // ..colorFilter =
       //     ColorFilter.mode(Colors.amber.withOpacity(0.5), BlendMode.plus)
-      ..color = ui.Color.fromARGB(255, 60, 21, 97).withOpacity(0.7)
+      ..color = ui.Color.fromARGB(255, 170, 0, 0).withOpacity(0.5)
       ..blendMode = BlendMode.plus;
     // ..strokeWidth = 2;
 
@@ -87,20 +87,20 @@ class FaceDetectorPainter extends CustomPainter {
       final LLTContour = face.getContour(FaceContourType.lowerLipTop);
       final ULBContour = face.getContour(FaceContourType.upperLipBottom);
       final ULTContour = face.getContour(FaceContourType.upperLipTop);
-      final LEBContour = face.getContour(FaceContourType.leftEyebrowBottom);
-      final LETContour = face.getContour(FaceContourType.leftEyebrowTop);
-      final REBContour = face.getContour(FaceContourType.rightEyebrowBottom);
-      final RETContour = face.getContour(FaceContourType.rightEyebrowTop);
+      // final LEBContour = face.getContour(FaceContourType.leftEyebrowBottom);
+      // final LETContour = face.getContour(FaceContourType.leftEyebrowTop);
+      // final REBContour = face.getContour(FaceContourType.rightEyebrowBottom);
+      // final RETContour = face.getContour(FaceContourType.rightEyebrowTop);
 
       drawUpperLip(canvas, ULBContour, size, scaleX, scaleY, ULTContour, paint);
 
       drawLowerLip(canvas, LLBContour, size, scaleX, scaleY, LLTContour, paint);
 
-      drawLeftEyebrow(
-          canvas, LEBContour, size, scaleX, scaleY, LETContour, paint);
+      // drawLeftEyebrow(
+      //     canvas, LEBContour, size, scaleX, scaleY, LETContour, paint);
 
-      drawRightEyebrow(
-          canvas, REBContour, size, scaleX, scaleY, RETContour, paint);
+      // drawRightEyebrow(
+      //     canvas, REBContour, size, scaleX, scaleY, RETContour, paint);
     }
   }
 
@@ -112,39 +112,39 @@ class FaceDetectorPainter extends CustomPainter {
     return path;
   }
 
-  void drawLeftEyebrow(ui.Canvas canvas, FaceContour LEBContour, ui.Size size,
-      double scaleX, double scaleY, FaceContour LETContour, ui.Paint paint) {
-    List<Offset> drawPoints = LEBContour.positionsList
-            .map((offset) =>
-                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-            .toList() +
-        LETContour.positionsList
-            .map((offset) =>
-                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-            .toList()
-            .reversed
-            .toList();
-    drawPoints.add(drawPoints.first);
+  // void drawLeftEyebrow(ui.Canvas canvas, FaceContour LEBContour, ui.Size size,
+  //     double scaleX, double scaleY, FaceContour LETContour, ui.Paint paint) {
+  //   List<Offset> drawPoints = LEBContour.positionsList
+  //           .map((offset) =>
+  //               Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+  //           .toList() +
+  //       LETContour.positionsList
+  //           .map((offset) =>
+  //               Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+  //           .toList()
+  //           .reversed
+  //           .toList();
+  //   drawPoints.add(drawPoints.first);
 
-    return canvas.drawPath(getPath(drawPoints), paint);
-  }
+  //   return canvas.drawPath(getPath(drawPoints), paint);
+  // }
 
-  void drawRightEyebrow(ui.Canvas canvas, FaceContour REBContour, ui.Size size,
-      double scaleX, double scaleY, FaceContour RETContour, ui.Paint paint) {
-    List<Offset> drawPoints = REBContour.positionsList
-            .map((offset) =>
-                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-            .toList() +
-        RETContour.positionsList
-            .map((offset) =>
-                Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
-            .toList()
-            .reversed
-            .toList();
-    drawPoints.add(drawPoints.first);
+  // void drawRightEyebrow(ui.Canvas canvas, FaceContour REBContour, ui.Size size,
+  //     double scaleX, double scaleY, FaceContour RETContour, ui.Paint paint) {
+  //   List<Offset> drawPoints = REBContour.positionsList
+  //           .map((offset) =>
+  //               Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+  //           .toList() +
+  //       RETContour.positionsList
+  //           .map((offset) =>
+  //               Offset(size.width - (offset.dx * scaleX), offset.dy * scaleY))
+  //           .toList()
+  //           .reversed
+  //           .toList();
+  //   drawPoints.add(drawPoints.first);
 
-    return canvas.drawPath(getPath(drawPoints), paint);
-  }
+  //   return canvas.drawPath(getPath(drawPoints), paint);
+  // }
 
   void drawUpperLip(ui.Canvas canvas, FaceContour ULBContour, ui.Size size,
       double scaleX, double scaleY, FaceContour ULTContour, ui.Paint paint) {
